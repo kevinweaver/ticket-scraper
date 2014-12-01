@@ -1,0 +1,65 @@
+**
+* homepage.js - Homepage tests.
+*/
+
+
+var links = [];
+var hours = [];
+var tickets = [];
+var casper = require('casper').create();
+
+function getLinks() {
+    var links = document.querySelectorAll('td.has_event_style1 a');
+    return Array.prototype.map.call(links, function(e) {
+        return e.innerHTML;
+    });
+}
+
+function getHours() {
+    var links = document.querySelectorAll('td.has_event_style1 a');
+    return Array.prototype.map.call(links, function(e) {
+        return e.innerHTML;
+    });
+}
+
+casper.start('http://www.showclix.com/event/thetonightshowstarringjimmyfallon', function() {});
+
+casper.then(function() {
+    that = this;
+    links = this.evaluate(getLinks);
+    links.forEach(function(link) {
+      that.click(link);
+      casper.wait(1000, function() {
+          this.echo("I've clicked a link and waited for a second.");
+      });
+      hours = this.evaluate(getLinks);
+      this.echo(hours.length + ' Available Hours Found:');
+      this.echo(' - ' + hours.join('\n - ')).exit();
+    });
+    //this.fill('form[action="/search"]', { q: 'phantomjs' }, true);
+});
+
+casper.then(function() {
+    // aggregate results for the 'phantomjs' search
+    //links = links.concat(this.evaluate(getLinks));
+});
+
+casper.run(function() {
+    // echo results in some pretty fashion
+    this.echo(links.length + ' Available Days Found:');
+    this.echo(' - ' + links.join('\n - ')).exit();
+});
+
+//casper.test.begin('Tests to see if there are any available Jimmy Falon tickets', 1, function suite(test) {
+//
+//  casper.start('http://www.showclix.com/event/thetonightshowstarringjimmyfallon', function() {
+//    // Verify that there are events
+//    test.assertExists('a.ui-state-active', '"Active Event" link is found.');
+//    // 10 articles should be listed.
+//    //test.assertElementCount('article', 10, '10 articles are listed.');
+//  });
+//
+//  casper.run(function() {
+//    test.done();
+//  });
+//});

@@ -72,6 +72,9 @@ casper.then(function(){
     self.wait(1000);
     self.then(function(a){
       // do something meaningful here
+      hours = this.evaluate(getHours);
+      this.echo(hours.length + ' Available Hours Found:');
+      this.echo(' - ' + hours.join('\n - '));
       this.echo(xpath);
       this.echo(this.getCurrentUrl());
     });
